@@ -5,8 +5,8 @@ import Data.Char (digitToInt)
 main :: IO ()
 main = do
         test
-        print $ processList input
-        putStrLn $ "Hello, World!" ++ show (head input)
+        putStrLn $ "Part 1! " ++ show (processList input)
+        putStrLn $ "Part 2! " ++ show (processListPart2 input)
 
 
 equalSum :: Char -> Char -> Int
@@ -21,11 +21,20 @@ processList x = go (x ++ [head x])
         go (_:_) = 0
 
 
+processListPart2 :: String -> Int
+processListPart2 x = go x
+  where skipLength = div (length x) 2
+        go [] = 0
+        go (a:as)
+          | length as < skipLength = 0
+          | otherwise = go as + 2 * equalSum a (head $ drop (skipLength-1) as)
 
 
 
 test :: IO ()
-test = do if processList "1122" /= 3
+test = do putStrLn "RUNNING TESTS!"
+
+          if processList "1122" /= 3
           then putStrLn $ "test 1122 expected 3, got " ++ show (processList "1122")
           else putStrLn "test 1122 passed"
 
@@ -40,6 +49,32 @@ test = do if processList "1122" /= 3
           if processList "91212129" /= 9
           then putStrLn $ "test 91212129 expected 9, got " ++ show (processList "91212129")
           else putStrLn "test 91212129 passed"
+
+------ Part 2
+          if processListPart2 "1212" /= 6
+          then putStrLn $ "test 1212 expected 6, got " ++ show (processListPart2 "1212")
+          else putStrLn "test 1212 passed"
+
+          if processListPart2 "1221" /= 0
+          then putStrLn $ "test 1221 expected 0, got " ++ show (processListPart2 "1221")
+          else putStrLn "test 1221 passed"
+
+          if processListPart2 "123425" /= 4
+          then putStrLn $ "test 123425 expected 4, got " ++ show (processListPart2 "123425")
+          else putStrLn "test 123425 passed"
+
+          if processListPart2 "123123" /= 12
+          then putStrLn $ "test 123123 expected 12, got " ++ show (processListPart2 "123123")
+          else putStrLn "test 123123 passed"
+
+          if processListPart2 "12131415" /= 4
+          then putStrLn $ "test 12131415 expected 4, got " ++ show (processListPart2 "12131415")
+          else putStrLn "test 12131415 passed"
+
+          putStrLn "DONE RUNNING TESTS!"
+
+
+
 
 
 input :: String
